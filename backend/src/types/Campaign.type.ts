@@ -28,6 +28,10 @@ export interface CampaignType extends Document {
 
     analyticsId?: Types.ObjectId;
 
+    successEmails: string[];
+
+    failedEmails: string[];
+
     createdAt: Date;
 
     updatedAt: Date;

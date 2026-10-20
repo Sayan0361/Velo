@@ -14,7 +14,10 @@ userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 
 /**
- * 
+ * This route is only required when the user is registered with providerType = auth0
+ * We save the user data in our mongodb with this route
+ * With /auth0-sync route, we sync the user with our system
+ * With /complete-profile route, we add the user to mongodb
  * 
 Frontend (Auth0 login)
         ↓

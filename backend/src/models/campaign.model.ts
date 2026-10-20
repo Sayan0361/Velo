@@ -85,6 +85,16 @@ const campaignSchema = new mongoose.Schema<CampaignType>(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Analytics",
         },
+
+        successEmails: {
+            type: [String],
+            default: []
+        },
+        
+        failedEmails: {
+            type: [String],
+            default: []
+        }
     },
     {
         timestamps: true,

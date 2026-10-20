@@ -131,6 +131,8 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
         recipientListURL: finalCSVUrl,
         messageBodyId: data.messageBodyId,
         status: "pending",
+        successEmails: [],
+        failedEmails: []
     };
 
     // optional fields
