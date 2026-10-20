@@ -153,16 +153,16 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
     // create campaign
     const campaign = await Campaign.create(campaignData);
 
-    console.log(
-        JSON.stringify(
-            {
-                validRecipients,
-                invalidRecipients
-            },
-            null,
-            2
-        )
-    );
+    // console.log(
+    //     JSON.stringify(
+    //         {
+    //             validRecipients,
+    //             invalidRecipients
+    //         },
+    //         null,
+    //         2
+    //     )
+    // );
 
     const emailJobData = {
         campaignId: campaign._id.toString(),
@@ -173,24 +173,26 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
         scheduleTime: data.scheduledAt || new Date(),
     };
 
-    appendEmailToQueue(emailJobData);
+    const response = await appendEmailToQueue(emailJobData);
+    console.log("Res: ", response)
 
-    // wait for 30 seconds and then check for bounced mails
-    setTimeout(async () => {
-        try {
-            await processBounces();
-        } catch (err) {
-            console.error(
-                "Bounce check failed:",
-                err
-            );
-        }
-    }, 30_000);
+    // // wait for 30 seconds and then check for bounced mails
+    // setTimeout(async () => {
+    //     try {
+    //         await processBounces();
+    //     } catch (err) {
+    //         console.error(
+    //             "Bounce check failed:",
+    //             err
+    //         );
+    //     }
+    // }, 30_000);
 
     return res.status(201).json({
         success: true,
         message: "Campaign created successfully",
         data: campaign,
+        result: response
     });
 }
 );

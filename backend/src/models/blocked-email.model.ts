@@ -15,7 +15,10 @@ const blockedEmailSchema =
             enum: [
                 "bounce",
                 "invalid",
-                "complaint"
+                "complaint",
+                "mx",
+                "others",
+                "blacklisted"
             ],
             required: true
         }

@@ -4,6 +4,10 @@ configDotenv({quiet: true})
 import { Worker } from "bullmq";
 import { sendEmail } from "../services/email.service.ts";
 import { appendFailedTasksToDLQ } from "../utils/AppendQueue.ts";
+import { Campaign } from "../models/campaign.model.ts";
+import connectDB from "../config/db.ts";
+
+await connectDB();
 
 const connection = {
     host: process.env.REDIS_HOST || '127.0.0.1',
@@ -15,6 +19,13 @@ const worker = new Worker(
     'emailQueue',
     async (job) => {
         const { to, subject, body, recipientName, campaignId } = job.data;
+
+        console.log("CampaignID at worker level: ", campaignId)
+        await Campaign.findByIdAndUpdate(campaignId, {
+            $set: {
+                status: "in-progress"
+            }
+        })
 
         console.log(`Processing email job ${job.id}:`, {
             to,

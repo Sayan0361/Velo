@@ -41,6 +41,19 @@ export const validateRecipient =
             
             //  Mail exchange records -> MX
             const mx = await dns.resolveMx(domain!);
+            console.log("MX: ", mx);
+
+            // Require at least one explicit MX record
+            const hasValidMx = mx.some(
+                record => record.exchange.trim().length > 0
+            );
+
+            if (!hasValidMx) {
+                return {
+                    valid: false,
+                    reason: "mx"
+                };
+            }
 
             if (!mx.length) {
                 return {
